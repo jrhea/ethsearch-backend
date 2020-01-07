@@ -21,7 +21,7 @@ RUN curl -o apache-nutch-1.16-bin.tar.gz http://apache.claz.org/nutch/1.16/apach
 RUN curl -o nutch.patch https://raw.githubusercontent.com/ethsearch/config/master/nutch.patch
 
 # Apply nutch.patch 
-RUN cd apache-nutch-1.16 && patch -p2 --dry-run <../nutch.patch 
+RUN cd apache-nutch-1.16 && patch -p2 <../nutch.patch 
 
 # Download solr
 #RUN curl -o  https://archive.apache.org/dist/lucene/solr/8.3.1/solr-8.3.1.tgz && tar xvf solr-8.3.1.tgz
