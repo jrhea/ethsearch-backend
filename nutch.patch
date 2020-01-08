@@ -289,11 +289,14 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +   
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/urls/seed.txt apache-nutch-1.16/urls/seed.txt
 --- apache-nutch-1.16-orig/urls/seed.txt	1969-12-31 18:00:00.000000000 -0600
-+++ apache-nutch-1.16/urls/seed.txt	2020-01-07 11:43:00.000000000 -0600
-@@ -0,0 +1,9 @@
++++ apache-nutch-1.16/urls/seed.txt	2020-01-07 18:45:44.000000000 -0600
+@@ -0,0 +1,12 @@
 +https://hackmd.io/@benjaminion
 +https://weekinethereumnews.com/
 +https://ethresear.ch/
++https://ethresear.ch/categories
++https://ethresear.ch/top
++https://ethresear.ch/latest
 +https://benjaminion.xyz/
 +https://ethhub.io/
 +https://github.com/ethereum/EIPs
