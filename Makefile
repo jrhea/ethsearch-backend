@@ -1,9 +1,9 @@
+SHELL := /bin/sh
 
-build:
-	docker build -t jrhea/ethsearch .
+include config.mk
 
-run:
-	docker run --rm -it jrhea/ethsearch
+crawler-%:
+	cd $(CRAWLER_DIR) && make $@
 
-push:
-	docker login && docker push jrhea/ethsearch
+search-%:
+	cd $(SEARCH_DIR) && make $@

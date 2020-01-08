@@ -5,7 +5,7 @@ WORKDIR /root/
 
 # Install dependencies
 RUN apt-get update
-RUN apt-get install -y wget openjdk-8-jdk-headless curl vim
+RUN apt-get install -y openjdk-8-jdk-headless curl vim patch
 
 # Set up JAVA_HOME
 RUN echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> $HOME/.bashrc
@@ -21,8 +21,6 @@ RUN tar xvzf apache-nutch-1.16-bin.tar.gz \
 
 # Download nutch.patch from repo
 RUN curl -o nutch.patch https://raw.githubusercontent.com/ethsearch/config/master/nutch.patch 
-
-RUN apt-get install -y patch
 
 # Apply nutch.patch 
 RUN cd apache-nutch-1.16 && patch -p1 <../nutch.patch 
