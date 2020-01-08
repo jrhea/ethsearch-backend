@@ -20,7 +20,7 @@ RUN tar xvzf apache-nutch-1.16-bin.tar.gz \
     && tar xvzf apache-nutch-1.16-src.tar.gz -C apache-nutch-1.16/src
 
 # Download nutch.patch from repo
-RUN curl -o nutch.patch https://raw.githubusercontent.com/ethsearch/config/master/nutch.patch 
+RUN curl -o nutch.patch https://raw.githubusercontent.com/ethsearch/ethsearch-backend/master/crawler/nutch.patch 
 
 # Apply nutch.patch 
 RUN cd apache-nutch-1.16 && patch -p1 <../nutch.patch 
