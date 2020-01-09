@@ -16,15 +16,14 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
        <param name="password" value="password"/>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/nutch-site.xml apache-nutch-1.16/conf/nutch-site.xml
 --- apache-nutch-1.16-orig/conf/nutch-site.xml	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/nutch-site.xml	2020-01-08 15:53:56.000000000 -0600
-@@ -4,5 +4,19 @@
++++ apache-nutch-1.16/conf/nutch-site.xml	2020-01-09 00:24:54.000000000 -0600
+@@ -4,5 +4,36 @@
  <!-- Put site-specific property overrides in this file. -->
  
  <configuration>
--
 +<property>
 + <name>http.agent.name</name>
-+ <value>ethsear.ch spider</value>
++ <value>ethsearchbot</value>
 +</property>
 +<property>
 +  <name>http.robot.rules.whitelist</name>
@@ -34,13 +33,30 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +</property>
 +<property>
 +  <name>plugin.includes</name>
-+  <value>protocol-http|protocol-httpclient|urlfilter-regex|parse-(html)|index-(basic|anchor)|indexer-solr|query-(basic|site|url)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)</value>
++  <value>protocol-http|protocol-httpclient|urlfilter-regex|urlfilter-suffix|parse-(html)|index-(basic|anchor)|indexer-solr|query-(basic|site|url)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)</value>
 +  <description>Adding plugins</description>
++</property>
++<property>
++  <name>fetcher.server.delay</name>
++  <value>1.0</value>
++  <description>The number of seconds the fetcher will delay between
++   successive requests to the same server.</description>
++</property>
+ 
++<property>
++  <name>fetcher.threads.fetch</name>
++  <value>50</value>
++  <description>The number of FetcherThreads the fetcher should use.
++  This is also determines the maximum number of requests that are
++  made at once (each FetcherThread handles one connection). The total
++  number of threads running in distributed mode will be the number of
++  fetcher threads * number of nodes as fetcher has one map task per node.
++  </description>
 +</property>
  </configuration>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/regex-urlfilter.txt apache-nutch-1.16/conf/regex-urlfilter.txt
 --- apache-nutch-1.16-orig/conf/regex-urlfilter.txt	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-01-08 15:35:43.000000000 -0600
++++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-01-09 00:09:19.000000000 -0600
 @@ -27,14 +27,14 @@
  -^(?:file|ftp|mailto):
  
@@ -51,7 +67,7 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
  # skip image and other suffixes we can't yet parse
  # for a more extensive coverage use the urlfilter-suffix plugin
 --(?i)\.(?:gif|jpg|png|ico|css|sit|eps|wmf|zip|ppt|mpg|xls|gz|rpm|tgz|mov|exe|jpeg|bmp|js)$
-+-(?i)\.(?:gif|jpg|png|ico|css|sit|eps|wmf|zip|ppt|mpg|xls|gz|rpm|tgz|mov|exe|jpeg|bmp|js|rss)$
++-(?i)\.(?:gif|jpg|png|ico|css|sit|eps|wmf|zip|ppt|mpg|xls|gz|rpm|tgz|mov|exe|jpeg|bmp|js|rss|svg|xml)$
  
  # skip URLs containing certain characters as probable queries, etc.
 --[?*!@=]
@@ -59,26 +75,43 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
  
  # skip URLs with slash-delimited segment that repeats 3+ times, to break loops
  -.*(/[^/]+)/[^/]+\1/[^/]+\1/
-@@ -60,5 +60,8 @@
+@@ -60,5 +60,9 @@
  #     172.16.0.0/12
  #-^https?://(?:172\.(?:1[6789]|2[0-9]|3[01])(?:\.(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))){2})(?::\d+)?(?:/|$)
  
-+# skip Twitter urls
-+-^https?://(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+).*
++# filter specific hosts
++-^https?://(?:www\.)?twitter\.com\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?ft\.com\/*([a-zA-Z0-9_]*)
 +
  # accept anything else
  +.
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/suffix-urlfilter.txt apache-nutch-1.16/conf/suffix-urlfilter.txt
 --- apache-nutch-1.16-orig/conf/suffix-urlfilter.txt	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/suffix-urlfilter.txt	2020-01-08 14:00:48.000000000 -0600
-@@ -43,6 +43,7 @@
++++ apache-nutch-1.16/conf/suffix-urlfilter.txt	2020-01-08 23:37:46.000000000 -0600
+@@ -37,12 +37,15 @@
+ .pcd
+ .psp
+ .psd
++.svg
+ .tga
+ .xbm
+ .xpm
  
  # web-formats
  .css
 +.rss
++.xml
  
  # archives/packages
  .arj
+@@ -89,7 +92,6 @@
+ 
+ # executables
+ .exe
+-.com
+ 
+ # windows links
+ .lnk
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/default.properties apache-nutch-1.16/default.properties
 --- apache-nutch-1.16-orig/default.properties	1969-12-31 18:00:00.000000000 -0600
 +++ apache-nutch-1.16/default.properties	2020-01-08 14:00:48.000000000 -0600
@@ -303,17 +336,72 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +   
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/urls/seed.txt apache-nutch-1.16/urls/seed.txt
 --- apache-nutch-1.16-orig/urls/seed.txt	1969-12-31 18:00:00.000000000 -0600
-+++ apache-nutch-1.16/urls/seed.txt	2020-01-08 15:41:33.000000000 -0600
-@@ -0,0 +1,12 @@
-+https://hackmd.io/@benjaminion
-+https://weekinethereumnews.com/
++++ apache-nutch-1.16/urls/seed.txt	2020-01-09 00:04:24.000000000 -0600
+@@ -0,0 +1,67 @@
 +https://ethresear.ch/
 +https://ethresear.ch/categories
 +https://ethresear.ch/top
 +https://ethresear.ch/latest
++https://ethresear.ch/c/layer-2
++https://ethresear.ch/c/sharding
++https://ethresear.ch/c/applications
++https://ethresear.ch/c/uncategorized
++https://ethresear.ch/c/data-structure
++https://ethresear.ch/c/zk-s-nt-arks
++https://ethresear.ch/c/meta-innovation
++https://ethresear.ch/c/economics
++https://ethresear.ch/c/privacy
++https://ethresear.ch/c/cryptography
++https://ethresear.ch/c/casper
++https://ethresear.ch/c/eth1x-research
++https://ethresear.ch/c/miscellaneous
++https://ethresear.ch/c/consensus
++https://ethresear.ch/c/better-icos
++https://ethresear.ch/c/eth2-phase-2
++https://ethresear.ch/c/tools
++https://ethresear.ch/c/eth1-to-eth2-transition
++https://ethresear.ch/c/evm-ewasm
++https://ethresear.ch/c/All-about-miners-and-their-behaviors
++https://ethresear.ch/c/security
++https://ethresear.ch/c/administrivia
++https://ethresear.ch/c/ui-ux
++https://ethresear.ch/c/decentralized-exchanges
++https://ethresear.ch/c/architecture
++https://ethresear.ch/c/plasma
++https://ethresear.ch/c/data-science
++https://ethresear.ch/c/Networking
++https://ethresear.ch/c/state-channels
++https://ethereum-magicians.org/
++https://ethereum-magicians.org/latest
++https://ethereum-magicians.org/top
++https://ethereum-magicians.org/c/uncategorized
++https://ethereum-magicians.org/c/working-groups
++https://ethereum-magicians.org/c/eips
++https://ethereum-magicians.org/c/fellowship-gatherings
++https://ethereum-magicians.org/c/primordial-soup
++https://ethereum-magicians.org/c/process-improvement
++https://ethereum-magicians.org/c/site-feedback
++https://ethereum-magicians.org/c/action-item
 +https://benjaminion.xyz/
++https://hackmd.io/@benjaminion
++https://weekinethereumnews.com/
 +https://ethhub.io/
-+https://github.com/ethereum/EIPs
-+https://github.com/ethereum/eth2.0-specs
++https://github.com/ethereum/EIPs/blob/master/README.md
++https://eips.ethereum.org
++https://eips.ethereum.org/all
++https://eips.ethereum.org/core
++https://eips.ethereum.org/networking
++https://eips.ethereum.org/interface
++https://eips.ethereum.org/erc
++https://eips.ethereum.org/meta
++https://eips.ethereum.org/informational
++https://github.com/ethereum/pm/blob/master/README.md
++https://github.com/ethereum/eth2.0-pm/blob/master/README.md
++https://github.com/ethereum/eth2.0-APIs/blob/master/README.md
++https://github.com/ethereum/eth2.0-metrics/blob/master/metrics.md
++https://github.com/ethereum/eth2.0-specs/blob/dev/README.md
++https://github.com/ethereum/eth2.0-specs/blob/v0.9.4/README.md
 +https://notes.ethereum.org/@serenity/handbook
 +https://ethereum.org/
++https://nakamoto.com/
++https://vitalik.ca/
