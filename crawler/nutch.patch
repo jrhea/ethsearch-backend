@@ -16,11 +16,12 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
        <param name="password" value="password"/>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/nutch-site.xml apache-nutch-1.16/conf/nutch-site.xml
 --- apache-nutch-1.16-orig/conf/nutch-site.xml	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/nutch-site.xml	2020-01-09 00:24:54.000000000 -0600
-@@ -4,5 +4,36 @@
++++ apache-nutch-1.16/conf/nutch-site.xml	2020-01-11 19:04:05.000000000 -0600
+@@ -4,5 +4,46 @@
  <!-- Put site-specific property overrides in this file. -->
  
  <configuration>
+-
 +<property>
 + <name>http.agent.name</name>
 + <value>ethsearchbot</value>
@@ -42,10 +43,9 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +  <description>The number of seconds the fetcher will delay between
 +   successive requests to the same server.</description>
 +</property>
- 
 +<property>
 +  <name>fetcher.threads.fetch</name>
-+  <value>50</value>
++  <value>100</value>
 +  <description>The number of FetcherThreads the fetcher should use.
 +  This is also determines the maximum number of requests that are
 +  made at once (each FetcherThread handles one connection). The total
@@ -53,6 +53,17 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +  fetcher threads * number of nodes as fetcher has one map task per node.
 +  </description>
 +</property>
++<property>
++ <name>fetcher.max.crawl.delay</name>
++ <value>5</value>
++ <description>
++ If the Crawl-Delay in robots.txt is set to greater than this value (in
++ seconds) then the fetcher will skip this page, generating an error report.
++ If set to -1 the fetcher will never skip such pages and will wait the
++ amount of time retrieved from robots.txt Crawl-Delay, however long that
++ might be.
++ </description>
++</property> 
  </configuration>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/regex-urlfilter.txt apache-nutch-1.16/conf/regex-urlfilter.txt
 --- apache-nutch-1.16-orig/conf/regex-urlfilter.txt	2020-01-07 11:43:00.000000000 -0600
