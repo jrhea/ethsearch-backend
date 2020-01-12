@@ -336,8 +336,8 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +   
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/urls/seed.txt apache-nutch-1.16/urls/seed.txt
 --- apache-nutch-1.16-orig/urls/seed.txt	1969-12-31 18:00:00.000000000 -0600
-+++ apache-nutch-1.16/urls/seed.txt	2020-01-09 00:04:24.000000000 -0600
-@@ -0,0 +1,67 @@
++++ apache-nutch-1.16/urls/seed.txt	2020-01-11 19:00:32.000000000 -0600
+@@ -0,0 +1,62 @@
 +https://ethresear.ch/
 +https://ethresear.ch/categories
 +https://ethresear.ch/top
@@ -386,7 +386,6 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +https://hackmd.io/@benjaminion
 +https://weekinethereumnews.com/
 +https://ethhub.io/
-+https://github.com/ethereum/EIPs/blob/master/README.md
 +https://eips.ethereum.org
 +https://eips.ethereum.org/all
 +https://eips.ethereum.org/core
@@ -395,13 +394,9 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +https://eips.ethereum.org/erc
 +https://eips.ethereum.org/meta
 +https://eips.ethereum.org/informational
-+https://github.com/ethereum/pm/blob/master/README.md
-+https://github.com/ethereum/eth2.0-pm/blob/master/README.md
-+https://github.com/ethereum/eth2.0-APIs/blob/master/README.md
-+https://github.com/ethereum/eth2.0-metrics/blob/master/metrics.md
-+https://github.com/ethereum/eth2.0-specs/blob/dev/README.md
-+https://github.com/ethereum/eth2.0-specs/blob/v0.9.4/README.md
 +https://notes.ethereum.org/@serenity/handbook
 +https://ethereum.org/
 +https://nakamoto.com/
 +https://vitalik.ca/
++https://www.reddit.com/r/ethereum/
++https://ethereum.stackexchange.com/
