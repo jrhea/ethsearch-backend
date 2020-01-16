@@ -347,8 +347,8 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +   
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/urls/seed.txt apache-nutch-1.16/urls/seed.txt
 --- apache-nutch-1.16-orig/urls/seed.txt	1969-12-31 18:00:00.000000000 -0600
-+++ apache-nutch-1.16/urls/seed.txt	2020-01-11 19:00:32.000000000 -0600
-@@ -0,0 +1,62 @@
++++ apache-nutch-1.16/urls/seed.txt	2020-01-16 10:30:54.000000000 -0600
+@@ -0,0 +1,63 @@
 +https://ethresear.ch/
 +https://ethresear.ch/categories
 +https://ethresear.ch/top
@@ -411,3 +411,4 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +https://vitalik.ca/
 +https://www.reddit.com/r/ethereum/
 +https://ethereum.stackexchange.com/
++https://dean.eigenmann.me/papers-i-loved/
