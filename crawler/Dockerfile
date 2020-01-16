@@ -15,7 +15,7 @@ RUN curl -o apache-nutch-1.16-bin.tar.gz http://apache.claz.org/nutch/1.16/apach
     && curl -o apache-nutch-1.16-src.tar.gz http://apache.claz.org/nutch/1.16/apache-nutch-1.16-src.tar.gz
 
 # Extract nutch
-RUN true && tar xvzf apache-nutch-1.16-bin.tar.gz \
+RUN true && true && tar xvzf apache-nutch-1.16-bin.tar.gz \
     && mkdir -p apache-nutch-1.16/src \
     && tar xvzf apache-nutch-1.16-src.tar.gz -C apache-nutch-1.16/src
 
