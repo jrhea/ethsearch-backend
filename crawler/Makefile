@@ -2,6 +2,9 @@
 crawler-build:
 	docker build -t ethsearch/crawler .
 
+crawler-rebuild:
+	docker build --no-cache -t ethsearch/crawler .
+
 crawler-run:
 	docker run --rm -it ethsearch/crawler
 

@@ -352,8 +352,8 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +   
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/urls/seed.txt apache-nutch-1.16/urls/seed.txt
 --- apache-nutch-1.16-orig/urls/seed.txt	1969-12-31 18:00:00.000000000 -0600
-+++ apache-nutch-1.16/urls/seed.txt	2020-01-17 16:42:48.000000000 -0600
-@@ -0,0 +1,77 @@
++++ apache-nutch-1.16/urls/seed.txt	2020-01-22 17:36:50.000000000 -0600
+@@ -0,0 +1,76 @@
 +https://ethresear.ch/
 +https://ethresear.ch/categories
 +https://ethresear.ch/top
@@ -414,8 +414,7 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +https://ethereum.org/
 +https://nakamoto.com/
 +https://vitalik.ca/
-+https://www.reddit.com/r/ethereum/
-+https://ethereum.stackexchange.com/
++https://waitwho.is/vitalikbuterin
 +https://dean.eigenmann.me
 +https://medium.com/@djrtwo
 +https://medium.com/@djrtwo/following
@@ -429,5 +428,5 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +https://medium.com/@adlerjohn
 +https://medium.com/@jason.carver
 +https://medium.com/@gakonst
-+
-+
++https://www.reddit.com/r/ethereum/
++https://ethereum.stackexchange.com/
