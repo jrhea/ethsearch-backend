@@ -14,7 +14,6 @@ $ make crawler-build
 
 ```bash
 $ make crawler-run
-root@75f4bffa69e8:~# cd apache-nutch-1.16 && bin/crawl -i -s urls/seed.txt crawl 3
 ```
 
 ### Update configs

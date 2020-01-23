@@ -25,3 +25,5 @@ RUN curl -o nutch.patch https://raw.githubusercontent.com/ethsearch/ethsearch-ba
 # Apply nutch.patch 
 RUN cd apache-nutch-1.16 && patch -p1 <../nutch.patch 
 
+CMD /bin/bash -c "source $HOME/.bashrc && cd apache-nutch-1.16 && bin/crawl -i -s urls/seed.txt crawl 3"
+
