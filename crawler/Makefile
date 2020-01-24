@@ -2,7 +2,7 @@ crawler-update-seedurls:
 	sh gen-nutch-patch.sh
 
 crawler-build:
-	docker build -t ethsearch/crawler .
+	docker build --build-arg CRAWL_VER=$(shell date +%s) -t ethsearch/crawler .
 
 crawler-rebuild:
 	docker build --no-cache -t ethsearch/crawler .
