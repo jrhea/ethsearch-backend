@@ -16,3 +16,4 @@ fi
 
 # generate a patch by comparing existing nutch folder to the newly downloaded version
 diff -Naur -x crawl -x *.html -x *.jar -x *ivy -x *logs -x src apache-nutch-1.16-orig apache-nutch-1.16 > nutch.patch
+exit 0

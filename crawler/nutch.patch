@@ -352,8 +352,8 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +   
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/urls/seed.txt apache-nutch-1.16/urls/seed.txt
 --- apache-nutch-1.16-orig/urls/seed.txt	1969-12-31 18:00:00.000000000 -0600
-+++ apache-nutch-1.16/urls/seed.txt	2020-01-22 17:36:50.000000000 -0600
-@@ -0,0 +1,76 @@
++++ apache-nutch-1.16/urls/seed.txt	2020-01-24 13:16:02.000000000 -0600
+@@ -0,0 +1,77 @@
 +https://ethresear.ch/
 +https://ethresear.ch/categories
 +https://ethresear.ch/top
@@ -430,3 +430,4 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +https://medium.com/@gakonst
 +https://www.reddit.com/r/ethereum/
 +https://ethereum.stackexchange.com/
++https://attestant.io/posts/
