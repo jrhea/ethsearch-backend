@@ -1,4 +1,4 @@
-crawler-update-seedurls:
+crawler-patch:
 	sh gen-nutch-patch.sh
 
 crawler-build:

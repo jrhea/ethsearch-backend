@@ -1,3 +1,24 @@
+diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/automaton-urlfilter.txt apache-nutch-1.16/conf/automaton-urlfilter.txt
+--- apache-nutch-1.16-orig/conf/automaton-urlfilter.txt	2020-01-07 11:43:00.000000000 -0600
++++ apache-nutch-1.16/conf/automaton-urlfilter.txt	2020-01-24 14:56:11.000000000 -0600
+@@ -22,14 +22,14 @@
+ # matches, the URL is ignored.
+ 
+ # skip file: ftp: and mailto: urls
+--(file|ftp|mailto):.*
++#-(file|ftp|mailto):.*
+ 
+ # skip image and other suffixes we can't yet parse
+ # for a more extensive coverage use the urlfilter-suffix plugin
+--.*\.(gif|GIF|jpg|JPG|png|PNG|ico|ICO|css|CSS|sit|SIT|eps|EPS|wmf|WMF|zip|ZIP|ppt|PPT|mpg|MPG|xls|XLS|gz|GZ|rpm|RPM|tgz|TGZ|mov|MOV|exe|EXE|jpeg|JPEG|bmp|BMP|js|JS)
++#-.*\.(gif|GIF|jpg|JPG|png|PNG|ico|ICO|css|CSS|sit|SIT|eps|EPS|wmf|WMF|zip|ZIP|ppt|PPT|mpg|MPG|xls|XLS|gz|GZ|rpm|RPM|tgz|TGZ|mov|MOV|exe|EXE|jpeg|JPEG|bmp|BMP|js|JS)
+ 
+ # skip URLs containing certain characters as probable queries, etc.
+--.*[?*!@=].*
++#-.*[?*!@=].*
+ 
+ # accept anything else
+ +.*
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/index-writers.xml apache-nutch-1.16/conf/index-writers.xml
 --- apache-nutch-1.16-orig/conf/index-writers.xml	2020-01-07 11:43:00.000000000 -0600
 +++ apache-nutch-1.16/conf/index-writers.xml	2020-01-08 14:00:48.000000000 -0600
@@ -16,7 +37,7 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
        <param name="password" value="password"/>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/nutch-site.xml apache-nutch-1.16/conf/nutch-site.xml
 --- apache-nutch-1.16-orig/conf/nutch-site.xml	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/nutch-site.xml	2020-01-11 19:04:05.000000000 -0600
++++ apache-nutch-1.16/conf/nutch-site.xml	2020-01-24 15:34:31.000000000 -0600
 @@ -4,5 +4,46 @@
  <!-- Put site-specific property overrides in this file. -->
  
@@ -28,13 +49,13 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +</property>
 +<property>
 +  <name>http.robot.rules.whitelist</name>
-+  <value>hackmd.io/@benjaminion,github.com/ethereum/EIPs,github.com/ethereum/eth2.0-specs</value>
++  <value>hackmd.io,github.com</value>
 +  <description>Comma separated list of hostnames or IP addresses to ignore robot rules parsing for.
 +  </description>
 +</property>
 +<property>
 +  <name>plugin.includes</name>
-+  <value>protocol-http|protocol-httpclient|urlfilter-regex|urlfilter-suffix|parse-(html)|index-(basic|anchor)|indexer-solr|query-(basic|site|url)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)</value>
++  <value>protocol-(http|httpclient)|urlfilter-regex|parse-(text|html|msexcel|msword|mspowerpoint|pdf|metatags|tika)|index-(basic|anchor|more|metadata)|indexer-solr|query-(basic|site|url|lang)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)</value>
 +  <description>Adding plugins</description>
 +</property>
 +<property>
@@ -67,7 +88,7 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
  </configuration>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/regex-urlfilter.txt apache-nutch-1.16/conf/regex-urlfilter.txt
 --- apache-nutch-1.16-orig/conf/regex-urlfilter.txt	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-01-16 22:44:55.000000000 -0600
++++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-01-24 15:16:09.000000000 -0600
 @@ -27,14 +27,14 @@
  -^(?:file|ftp|mailto):
  
@@ -86,18 +107,25 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
  
  # skip URLs with slash-delimited segment that repeats 3+ times, to break loops
  -.*(/[^/]+)/[^/]+\1/[^/]+\1/
-@@ -60,5 +60,14 @@
+@@ -60,5 +60,21 @@
  #     172.16.0.0/12
  #-^https?://(?:172\.(?:1[6789]|2[0-9]|3[01])(?:\.(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))){2})(?::\d+)?(?:/|$)
  
-+# filter specific hosts
++# filter out specific url patterns
 +-^https?://(?:www\.)?twitter\.com\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?ft\.com\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?redditinc\.com\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?reddithelp\.com\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?reddit\.com\/wiki\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?reddit\.com\/user\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?reddit\.com\/coins\/*([a-zA-Z0-9_]*)
-+
++-^https?://(?:www\.)?reddit\.com\/gilded\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?zoom\.us\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?shop\.ethhub\.io\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?scifi\.stackexchange\.com\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?etherscan\.io\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?t\.me\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?ethresear\.ch\/t\/read-this-before-posting\/*([a-zA-Z0-9_]*)
 +
  # accept anything else
  +.
@@ -352,8 +380,8 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +   
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/urls/seed.txt apache-nutch-1.16/urls/seed.txt
 --- apache-nutch-1.16-orig/urls/seed.txt	1969-12-31 18:00:00.000000000 -0600
-+++ apache-nutch-1.16/urls/seed.txt	2020-01-24 13:16:02.000000000 -0600
-@@ -0,0 +1,77 @@
++++ apache-nutch-1.16/urls/seed.txt	2020-01-24 15:46:52.000000000 -0600
+@@ -0,0 +1,83 @@
 +https://ethresear.ch/
 +https://ethresear.ch/categories
 +https://ethresear.ch/top
@@ -431,3 +459,10 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +https://www.reddit.com/r/ethereum/
 +https://ethereum.stackexchange.com/
 +https://attestant.io/posts/
++https://github.com/ethereum/pm/blob/master/README.md	
++https://github.com/ethereum/eth2.0-pm/blob/master/README.md	
++https://github.com/ethereum/eth2.0-APIs/blob/master/README.md	
++https://github.com/ethereum/eth2.0-metrics/blob/master/metrics.md	
++https://github.com/ethereum/eth2.0-specs/blob/dev/README.md	
++https://github.com/ethereum/EIPs/blob/master/README.md
+\ No newline at end of file
