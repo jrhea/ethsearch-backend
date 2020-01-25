@@ -88,8 +88,8 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
  </configuration>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/regex-urlfilter.txt apache-nutch-1.16/conf/regex-urlfilter.txt
 --- apache-nutch-1.16-orig/conf/regex-urlfilter.txt	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-01-24 16:31:24.000000000 -0600
-@@ -27,14 +27,14 @@
++++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-01-24 18:34:16.000000000 -0600
+@@ -27,38 +27,40 @@
  -^(?:file|ftp|mailto):
  
  # skip URLs longer than 2048 characters, see also db.max.outlink.length
@@ -99,20 +99,39 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
  # skip image and other suffixes we can't yet parse
  # for a more extensive coverage use the urlfilter-suffix plugin
 --(?i)\.(?:gif|jpg|png|ico|css|sit|eps|wmf|zip|ppt|mpg|xls|gz|rpm|tgz|mov|exe|jpeg|bmp|js)$
-+-(?i)\.(?:gif|jpg|png|ico|css|sit|eps|wmf|zip|ppt|mpg|xls|gz|rpm|tgz|mov|exe|jpeg|bmp|js|rss|svg|xml)$
- 
- # skip URLs containing certain characters as probable queries, etc.
+-
+-# skip URLs containing certain characters as probable queries, etc.
 --[?*!@=]
-+-[?*!=]
++-(?i)\.(?:gif|jpg|png|ico|css|sit|eps|wmf|zip|ppt|mpg|xls|gz|rpm|tgz|mov|exe|jpeg|bmp|js|rss|svg|xml)$
  
  # skip URLs with slash-delimited segment that repeats 3+ times, to break loops
  -.*(/[^/]+)/[^/]+\1/[^/]+\1/
-@@ -60,5 +60,25 @@
- #     172.16.0.0/12
- #-^https?://(?:172\.(?:1[6789]|2[0-9]|3[01])(?:\.(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))){2})(?::\d+)?(?:/|$)
  
+-# For safe web crawling if crawled content is exposed in a public search interface:
+-# - exclude private network addresses to avoid that information
+-#   can be leaked by placing links pointing to web interfaces of services
+-#   running on the crawling machines (e.g., HDFS, Hadoop YARN)
+-# - in addition, file:// URLs should be either excluded by a URL filter rule
+-#   or ignored by not enabling protocol-file
+-#
+-# - exclude localhost and loop-back addresses
+-#     http://localhost:8080
+-#     http://127.0.0.1/ .. http://127.255.255.255/
+-#     http://[::1]/
+-#-^https?://(?:localhost|127(?:\.(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))){3}|\[::1\])(?::\d+)?(?:/|$)
+-#
+-# - exclude private IP address spaces
+-#     10.0.0.0/8
+-#-^https?://(?:10(?:\.(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))){3})(?::\d+)?(?:/|$)
+-#     192.168.0.0/16
+-#-^https?://(?:192\.168(?:\.(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))){2})(?::\d+)?(?:/|$)
+-#     172.16.0.0/12
+-#-^https?://(?:172\.(?:1[6789]|2[0-9]|3[01])(?:\.(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))){2})(?::\d+)?(?:/|$)
 +# Specifically allow github links that end in .md
 ++^https?://(?:www\.)?github\.com\/.*\.md
++
++# Specifically allow medium links even if they have query params
+++^https?://(?:www\.)?medium\.com\/.*\?.*
 +
 +# filter out specific url patterns
 +-^https?://(?:www\.)?twitter\.com\/*([a-zA-Z0-9_]*)
@@ -131,6 +150,9 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +-^https?://(?:www\.)?ethresear\.ch\/t\/read-this-before-posting\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?github\.com\/*([a-zA-Z0-9_]*)
 +
++# skip URLs containing certain characters as probable queries, etc.
++-[?*!=]
+ 
  # accept anything else
  +.
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/suffix-urlfilter.txt apache-nutch-1.16/conf/suffix-urlfilter.txt
