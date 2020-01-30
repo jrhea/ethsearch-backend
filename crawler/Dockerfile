@@ -28,5 +28,5 @@ RUN curl -o nutch.patch https://raw.githubusercontent.com/ethsearch/ethsearch-ba
 # Apply nutch.patch 
 RUN cd apache-nutch-1.16 && patch -p1 <../nutch.patch 
 
-CMD /bin/bash -c "source $HOME/.bashrc && cd apache-nutch-1.16 && bin/crawl -i -s urls/seed.txt crawl 3"
+CMD /bin/bash -c "source $HOME/.bashrc && cd apache-nutch-1.16 && bin/crawl -i -s urls/seed.txt crawl 3 && curl 'http://ethsear.ch:8080/solr/nutch/update' -H \"Content-type: text/xml\" --data-binary '<delete><query>host:medium.com AND url:*source</query></delete>' && curl 'http://ethsear.ch:8080/solr/nutch/update' -H \"Content-type: text/xml\" --data-binary '<commit />'"
 
