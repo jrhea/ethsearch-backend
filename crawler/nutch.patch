@@ -88,8 +88,8 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
  </configuration>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/regex-urlfilter.txt apache-nutch-1.16/conf/regex-urlfilter.txt
 --- apache-nutch-1.16-orig/conf/regex-urlfilter.txt	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-01-31 15:53:40.000000000 -0600
-@@ -27,38 +27,44 @@
++++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-02-14 15:41:10.000000000 -0600
+@@ -27,38 +27,48 @@
  -^(?:file|ftp|mailto):
  
  # skip URLs longer than 2048 characters, see also db.max.outlink.length
@@ -137,11 +137,15 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +# Specifically allow medium links even if they have query params
 ++^https?://(?:www\.)?medium\.com\/.*\?.*
 +
++# Specifically allow r/ethereum https://www.reddit.com/r/ethereum/
+++^https?://(?:www\.)?reddit\.com\/r\/ethereum\/*([a-zA-Z0-9_]*)
++
 +# filter out specific url patterns
 +-^https?://(?:www\.)?twitter\.com\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?ft\.com\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?redditinc\.com\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?reddithelp\.com\/*([a-zA-Z0-9_]*)
++-^https?://(?:www\.)?reddit\.com\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?reddit\.com\/wiki\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?reddit\.com\/user\/*([a-zA-Z0-9_]*)
 +-^https?://(?:www\.)?reddit\.com\/coins\/*([a-zA-Z0-9_]*)
