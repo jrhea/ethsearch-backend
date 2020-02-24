@@ -88,8 +88,8 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
  </configuration>
 diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nutch-1.16-orig/conf/regex-urlfilter.txt apache-nutch-1.16/conf/regex-urlfilter.txt
 --- apache-nutch-1.16-orig/conf/regex-urlfilter.txt	2020-01-07 11:43:00.000000000 -0600
-+++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-02-14 15:41:10.000000000 -0600
-@@ -27,38 +27,48 @@
++++ apache-nutch-1.16/conf/regex-urlfilter.txt	2020-02-24 12:32:23.000000000 -0600
+@@ -27,38 +27,54 @@
  -^(?:file|ftp|mailto):
  
  # skip URLs longer than 2048 characters, see also db.max.outlink.length
@@ -136,6 +136,12 @@ diff -Naur -x crawl -x '*.html' -x '*.jar' -x '*ivy' -x '*logs' -x src apache-nu
 +
 +# Specifically allow medium links even if they have query params
 ++^https?://(?:www\.)?medium\.com\/.*\?.*
++
++# Specifically allow https://ethereum.stackexchange.com
+++^https?://(?:www\.)?ethereum\.stackexchange\.com\/*([a-zA-Z0-9_]*)
++
++# Filter out https://*.stackexchange.com
++-^https?://(?:www\.)?.*\.stackexchange\.com\/*([a-zA-Z0-9_]*)
 +
 +# Specifically allow r/ethereum https://www.reddit.com/r/ethereum/
 ++^https?://(?:www\.)?reddit\.com\/r\/ethereum\/*([a-zA-Z0-9_]*)
